@@ -10,20 +10,27 @@ import OnboardingPage from './pages/OnboardingPage.jsx';
 import  { Toaster } from 'react-hot-toast';  
 import PageLoader from './components/PageLoader.jsx';
 import useAuthuser from './hooks/useAuthUser.js';
+import  Layout  from './components/Layout.jsx';
+import { useThemeStore } from './store/useThemeStore.js';
 
 const App = () => {
   const {isLoading, authUser} = useAuthuser();
+  const {theme} = useThemeStore();
+
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;
 
-  console.log('Auth State:', { isAuthenticated, isOnboarded, authUser });
+  // console.log('Auth State:', { isAuthenticated, isOnboarded, authUser });
 
   if(isLoading) return <PageLoader/>;
   
-  return <div className=" h-screen" data-theme ="coffee">
+  return <div className=" h-screen" data-theme ={theme}>
       <Routes>
       <Route path="/" element={isAuthenticated && isOnboarded ? (
-        <HomePage/>
+        <Layout showSidebar= {true}>
+          <HomePage/>
+        </Layout>
+        
         ): (<Navigate to={!isAuthenticated ? "/login" : "onboarding"}/>
         )
         }
@@ -52,3 +59,4 @@ const App = () => {
 };
 
 export default App
+
