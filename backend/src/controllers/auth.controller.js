@@ -41,7 +41,8 @@ export async function signup(req,res){
                 maxAge:7*24*60*60*1000,
                 httpOnly: true,
                 sameSite : "strict",
-                secure: process.env.NODE_ENV === "production",
+                // secure: process.env.NODE_ENV === "production",
+                secure: false,
             })
 
             res.status(201).json({success: true, user:newUser})
@@ -68,28 +69,26 @@ export async function login(req,res){
         return res.status(401).json({ message: "Invalid Email or password"});
     }
 
-    try{
-    await upsertStreamUser({
-        id: newUSer._id.toString(),
-        name: newuser.FullName,
-        image:  newuser.profilepic || "",
-    });
-    console.log(`stream user created for ${newUSer.FullName}`);
+    try {
+        await upsertStreamUser({
+            id: user._id.toString(),
+            name: user.FullName,
+            image: user.profilepic || "",
+        });
+        console.log(`Stream user created for ${user.FullName}`);
     } 
-    catch(error){
+    catch(error) {
         console.log("Error creating Stream user:", error);
     }
 
-
-    
-    const token = jwt.sign({userId:User._id}, process.env.JWT_SECRET_KEY, {
-                expiresIn: "7d"
-            })
+    const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY, {
+        expiresIn: "7d"
+    })
 
     res.cookie("jwt", token,{
     maxAge:7*24*60*60*1000,
     httpOnly: true,
-    sameSite : "strict",
+    sameSite : "lax",
     secure: process.env.NODE_ENV === "production",
     });
 

@@ -1,8 +1,33 @@
 import axios from "axios";
 
-// const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api" : "/api";
-
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:5000/api",
-  withCredentials: true, // send cookies with the request
+  withCredentials: true,
 });
+
+// Add a request interceptor to add the token to all requests
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor to handle token from login response
+axiosInstance.interceptors.response.use(
+  (response) => {
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);

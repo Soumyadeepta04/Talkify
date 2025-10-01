@@ -1,11 +1,11 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query';
-import { getAuthuser } from '../lib/api';
+import { getAuthUser } from '../lib/api';
 
 const useAuthuser = () => {
   const authUser = useQuery({
     queryKey: ["authUser"],
-    queryFn: getAuthuser,
+    queryFn: getAuthUser,
     retry: false,
   });
 
@@ -13,3 +13,4 @@ const useAuthuser = () => {
 }
 
 export default useAuthuser
+

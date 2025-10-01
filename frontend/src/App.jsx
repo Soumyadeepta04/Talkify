@@ -9,13 +9,14 @@ import ChatPage from './pages/ChatPage.jsx';
 import OnboardingPage from './pages/OnboardingPage.jsx';
 import  { Toaster } from 'react-hot-toast';  
 import PageLoader from './components/PageLoader.jsx';
-import useAuthuser from './hooks/useAuthuser.js';
+import useAuthuser from './hooks/useAuthUser.js';
 
 const App = () => {
-
-  const {isLoading,authUser} = useAuthuser();
+  const {isLoading, authUser} = useAuthuser();
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;
+
+  console.log('Auth State:', { isAuthenticated, isOnboarded, authUser });
 
   if(isLoading) return <PageLoader/>;
   
@@ -27,12 +28,23 @@ const App = () => {
         )
         }
         />
-      <Route path="/signup" element={!isAuthenticated ? <SignUpPage/> : <Navigate to="/"/>}/>
-      <Route path="/login" element={!isAuthenticated ? <LoginPage/>: <Navigate to="/"/>}/>
+      <Route path="/signup" element={!isAuthenticated ? <SignUpPage/> : <Navigate to={isOnboarded ? "/" : "/onboarding"}/>}/>
+
+      <Route path="/login" element={!isAuthenticated ? <LoginPage/>: <Navigate to={isOnboarded ? "/" : "/onboarding"}/>}/>  
+      
+
       <Route path="/notifications" element={isAuthenticated? <NotificationsPage/>: <Navigate to="/login"/>}/>
       <Route path="/call" element={isAuthenticated? <CallPage/> : <Navigate to="/login"/>}/>
       <Route path="/chat" element={isAuthenticated? <ChatPage/> : <Navigate to="/login"/>}/>
-      <Route path="/onboarding" element={isAuthenticated? <OnboardingPage/> : <Navigate to="/login"/>}/>
+      <Route path="/onboarding" element={isAuthenticated ?(
+        !isOnboarded ? (
+          <OnboardingPage />
+        ) : (
+          <Navigate to = "/" />
+        )
+      ) : (
+        <Navigate to ="/login"/>
+      ) }/>
 
       </Routes>
       <Toaster/>

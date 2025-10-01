@@ -10,9 +10,15 @@ router.post("/logout", logout);
 
 router.post("/onboarding",protectRoute ,onboard);
 
-router.get("/me", protectRoute, (req,res) =>{
-    res.status(200).json ({ success: true, user: req.user});
+// routes/auth.js
+router.get("/me", protectRoute, (req,res) => {
+    const { _id, email, FullName, profilepic, isOnboarded = false } = req.user;
+    res.status(200).json({
+        success: true,
+        user: { _id, email, FullName, profilepic, isOnboarded }
+    });
 });
+
 
 
 export default router;
