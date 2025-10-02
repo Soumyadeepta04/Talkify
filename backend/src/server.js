@@ -18,7 +18,7 @@ const PORT = process.env.PORT;
 
 app.use(cors({
     // origin: "http://localhost:5173",
-    origin: true,
+    origin: "https://talkify-frontend-69npl03wa-soumyadeepta-mannas-projects.vercel.app",
     credentials: true // allow frontend to send cookies
 }));
 app.use(express.json());
