@@ -1,18 +1,15 @@
 import axios from "axios";
 
+// Create an Axios instance
 export const axiosInstance = axios.create({
-  // baseURL: "http://localhost:5000/api",
-  baseURL: "https://talkify-wheat.vercel.app/api",
-  withCredentials: true,
+  baseURL: "https://talkify-wheat.vercel.app/api", // Backend URL
+  withCredentials: true, // Send cookies automatically
 });
 
-// Add a request interceptor to add the token to all requests
+// Optional: request interceptor (if you want to log requests)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
+    // You no longer need to add Authorization headers manually
     return config;
   },
   (error) => {
@@ -20,15 +17,14 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Add a response interceptor to handle token from login response
+// Optional: response interceptor (if you want to handle global responses)
 axiosInstance.interceptors.response.use(
   (response) => {
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-    }
+    // You no longer need to store tokens in localStorage
     return response;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+
