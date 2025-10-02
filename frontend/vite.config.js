@@ -10,5 +10,8 @@ export default defineConfig({
   preview: {
     // This tells the preview server to fallback to index.html
     historyApiFallback: true,
+  },
+  build: {
+    outDir: 'dist'
   }
 })
