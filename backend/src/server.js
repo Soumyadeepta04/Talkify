@@ -23,7 +23,7 @@ const PORT = process.env.PORT;
 // }));
 // Dynamic CORS for any frontend
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
+  const origin = req.headers.origin || "*";
 
   if (origin) {
     res.setHeader("Access-Control-Allow-Origin", origin); // echo back the incoming origin
