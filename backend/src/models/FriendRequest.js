@@ -23,6 +23,7 @@ const friendRequestSchema = new mongoose.Schema(
   }
 );
 
-const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
+// Make sure we don't try to register the model if it's already registered
+const FriendRequest = mongoose.models.FriendRequest || mongoose.model("FriendRequest", friendRequestSchema);
 
 export default FriendRequest;

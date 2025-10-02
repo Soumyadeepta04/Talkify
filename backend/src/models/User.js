@@ -67,9 +67,7 @@ userSchema.pre("save", async function(next){
     return isPassowrdCorrect;
  }
 
-const User = mongoose.model("user", userSchema);
-
-
- 
+// Make sure we don't try to register the model if it's already registered
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;
