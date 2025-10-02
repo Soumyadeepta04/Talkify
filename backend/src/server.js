@@ -16,30 +16,11 @@ import "./models/FriendRequest.js";
 const app = express();
 const PORT = process.env.PORT;
 
-// app.use(cors({
-//     // origin: "http://localhost:5173",
-//     origin: "https://talkify-frontend-69npl03wa-soumyadeepta-mannas-projects.vercel.app",
-//     credentials: true // allow frontend to send cookies
-// }));
-// Dynamic CORS for any frontend
-app.use((req, res, next) => {
-  const origin = req.headers.origin || "*";
-
-  if (origin) {
-    res.setHeader("Access-Control-Allow-Origin", origin); // echo back the incoming origin
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  }
-
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
-
+app.use(cors({
+    // origin: "http://localhost:5173",
+    origin: "https://talkify-frontend-sepia.vercel.app",
+    credentials: true // allow frontend to send cookies
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
