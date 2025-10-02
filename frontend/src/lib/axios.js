@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
   // baseURL: "http://localhost:5000/api",
-  baseURL: "https://talkify-wheat.vercel.app/api",
+  baseURL: "https://talkify-4g5lpjxpz-soumyadeepta-mannas-projects.vercel.app/api",
   withCredentials: true,
 });
 
