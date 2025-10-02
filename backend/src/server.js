@@ -17,10 +17,13 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
-    // origin: "http://localhost:5173",
-    origin: "https://talkify-frontend-69npl03wa-soumyadeepta-mannas-projects.vercel.app",
-    credentials: true // allow frontend to send cookies
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // curl, Postman
+    callback(null, true); // allow any origin dynamically
+  },
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
