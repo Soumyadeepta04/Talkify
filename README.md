@@ -2,7 +2,7 @@
 
 ## 🤖 Introduction
 Talkify is a modern real-time messaging & video calling platform built to connect people across the globe.
-From instant chats with typing indicators and reactions to 1-on-1 / group video calls with screen sharing & recording, Talkify is designed to make communication seamless, fast, and enjoyable.
+From instant chats with typing indicators and reactions to 1-on-1 video calls with screen sharing & recording, Talkify is designed to make communication seamless, fast, and enjoyable.
 
 Whether for casual conversations, study sessions, or professional meetings, Talkify provides a smooth and secure environment with JWT authentication, global state management, and 32+ customizable UI themes.
 
