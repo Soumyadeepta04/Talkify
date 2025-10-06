@@ -1,19 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React from 'react'
 import { logout } from "../lib/api";
 
 const useLogout = () => {
-   const queryClient = useQueryClient();
-    const { mutate: logoutMutation,
-        isPending,
-        error,
-     } = useMutation({
-      mutationFn: logout,
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-    });
+  const queryClient = useQueryClient();
 
-    return {logoutMutation, isPending, error};
-}
+  const {
+    mutate: logoutMutation,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      // clear cached authUser so App.jsx redirects correctly
+      queryClient.setQueryData(["authUser"], null);
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    },
+  });
 
-export default useLogout
+  return { logoutMutation, isPending, error };
+};
 
+export default useLogout;
