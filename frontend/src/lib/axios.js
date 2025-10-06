@@ -6,10 +6,9 @@ export const axiosInstance = axios.create({
   withCredentials: true, // Send cookies automatically
 });
 
-// Optional: request interceptor (if you want to log requests)
+// Optional: request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // You no longer need to add Authorization headers manually
     return config;
   },
   (error) => {
@@ -17,14 +16,8 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Optional: response interceptor (if you want to handle global responses)
+// Optional: response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // You no longer need to store tokens in localStorage
-    return response;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (response) => response,
+  (error) => Promise.reject(error)
 );
-

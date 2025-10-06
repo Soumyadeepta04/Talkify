@@ -1,7 +1,8 @@
 import React from "react";
 import useAuthuser from "../hooks/useAuthUser";
 import { useLocation, Link } from "react-router-dom";
-import { BellIcon, LogOutIcon, MessageCircle } from "lucide-react";
+
+import { BellIcon, LogOutIcon , MessageCircle } from "lucide-react";
 import ThemeSelector from "./ThemeSelector.jsx";
 import useLogout from "../hooks/useLogout.js";
 
@@ -10,7 +11,7 @@ const Navbar = () => {
   const location = useLocation();
   const isChatPage = location.pathname?.startsWith("/chat");
 
-  const { logoutMutation, isPending, error } = useLogout();
+  const { logoutMutation, isLoading, error } = useLogout();
 
   return (
     <nav className="bg-base-200 border-b border-base-300 sticky top-0 z-30 h-16 flex items-center">
@@ -21,7 +22,7 @@ const Navbar = () => {
             <div className="pl-5">
               <Link to="/" className="flex items-center gap-2.5">
                 <MessageCircle className="size-9 text-primary" />
-                <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
+                <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
                   Talkify
                 </span>
               </Link>
@@ -48,19 +49,20 @@ const Navbar = () => {
           <button
             className="btn btn-ghost btn-circle"
             onClick={() => logoutMutation()}
-            disabled={isPending}
+            disabled={isLoading}
+            title="Logout"
           >
-            {isPending ? (
+            {isLoading ? (
               <span className="loading loading-spinner"></span>
             ) : (
               <LogOutIcon className="h-6 w-6 text-base-content opacity-70" />
             )}
           </button>
 
-          {/* Error message if logout fails */}
+          {/* optional inline error */}
           {error && (
             <div className="alert alert-error ml-4">
-              <span>{error.message}</span>
+              <span>{error?.response?.data?.message || error?.message || "Logout failed"}</span>
             </div>
           )}
         </div>

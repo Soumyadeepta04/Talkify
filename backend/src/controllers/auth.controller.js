@@ -16,40 +16,40 @@ export async function signup(req,res){
 
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: "Invalid email format" });
-            }
+        }
         
         const existinguser = await User.findOne ({email});
-            if(existinguser){
-                return res.status(400).json({ message: "Email already exists, please use a different one" });
-            }
-            const idx = Math.floor(Math.random() *100) +1;
+        if(existinguser){
+            return res.status(400).json({ message: "Email already exists, please use a different one" });
+        }
+        const idx = Math.floor(Math.random() *100) +1;
+        const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
 
-            const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
+        const newUser = await User.create ({
+            email,
+            FullName,
+            password,
+            profilepic: randomAvatar,
+        })
 
-            const newUser = await User.create ({
-                email,
-                FullName,
-                password,
-                profilepic: randomAvatar,
-            })
+        const token = jwt.sign({userId:newUser._id}, process.env.JWT_SECRET_KEY, {
+            expiresIn: "7d"
+        })
 
-            const token = jwt.sign({userId:newUser._id}, process.env.JWT_SECRET_KEY, {
-                expiresIn: "7d"
-            })
+        res.cookie("jwt", token,{
+            maxAge:7*24*60*60*1000,
+            httpOnly: true,
+            sameSite : "none",
+            // secure: process.env.NODE_ENV === "production",
+            secure: true,
+            path: "/",
+        })
 
-            res.cookie("jwt", token,{
-                maxAge:7*24*60*60*1000,
-                httpOnly: true,
-                sameSite : "none",
-                // secure: process.env.NODE_ENV === "production",
-                secure: true,
-            })
+        res.status(201).json({success: true, user:newUser})
 
-            res.status(201).json({success: true, user:newUser})
-
-        }catch(error){
-            console.error("Error in signup:", error);
-            res.status(500).json({message: "Internal Server Error"});
+    } catch(error){
+        console.error("Error in signup:", error);
+        res.status(500).json({message: "Internal Server Error"});
     }
 }
 
@@ -76,8 +76,7 @@ export async function login(req,res){
             image: user.profilepic || "",
         });
         console.log(`Stream user created for ${user.FullName}`);
-    } 
-    catch(error) {
+    } catch(error) {
         console.log("Error creating Stream user:", error);
     }
 
@@ -86,24 +85,40 @@ export async function login(req,res){
     })
 
     res.cookie("jwt", token,{
-    maxAge:7*24*60*60*1000,
-    httpOnly: true,
-    sameSite : "none",
-    secure: true,
+      maxAge:7*24*60*60*1000,
+      httpOnly: true,
+      sameSite : "none",
+      secure: true,
+      path: "/",
     });
 
     res.status(200).json({success: true, user});
 
-   }
-   catch(error){
+   } catch(error){
         console.log("Error in login controller", error.message);
         res.status(500).json({message: "Internal Server Error"});
    }
 }
 
 export function logout(req,res){
-    res.clearCookie ("jwt")
-    res.status(200).json({ success: true, message: "Logout sucessful"});
+    // Clear the cookie with same options (sameSite/secure/path) so browser removes it.
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    });
+
+    // Extra: explicitly set an expired cookie to ensure removal on some browsers
+    res.cookie("jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    });
+
+    res.status(200).json({ success: true, message: "Logout successful" });
 }
 
 export async function onboard(req, res) {
