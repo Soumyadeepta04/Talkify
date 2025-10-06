@@ -33,19 +33,22 @@ const ChatPage = () => {
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
-    enabled: !!authUser, // this will run only when authUser is available
+    enabled: !!authUser,
   });
 
   useEffect(() => {
+    let isMounted = true; // to prevent state update after unmount
+    let clientInstance;
+
     const initChat = async () => {
       if (!tokenData?.token || !authUser) return;
 
       try {
-        console.log("Initializing stream chat client...");
+        console.log("Initializing Stream Chat client...");
 
-        const client = StreamChat.getInstance(TALKIFY_API_KEY);
+        clientInstance = StreamChat.getInstance(TALKIFY_API_KEY);
 
-        await client.connectUser(
+        await clientInstance.connectUser(
           {
             id: authUser._id,
             name: authUser.FullName,
@@ -54,30 +57,34 @@ const ChatPage = () => {
           tokenData.token
         );
 
-        //
         const channelId = [authUser._id, targetUserId].sort().join("-");
-
-        // you and me
-        // if i start the chat => channelId: [myId, yourId]
-        // if you start the chat => channelId: [yourId, myId]  => [myId,yourId]
-
-        const currChannel = client.channel("messaging", channelId, {
+        const currChannel = clientInstance.channel("messaging", channelId, {
           members: [authUser._id, targetUserId],
         });
 
         await currChannel.watch();
 
-        setChatClient(client);
-        setChannel(currChannel);
+        if (isMounted) {
+          setChatClient(clientInstance);
+          setChannel(currChannel);
+        }
       } catch (error) {
         console.error("Error initializing chat:", error);
         toast.error("Could not connect to chat. Please try again.");
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     initChat();
+
+    // Cleanup on unmount
+    return () => {
+      isMounted = false;
+      if (clientInstance) {
+        clientInstance.disconnectUser().catch((err) => console.error(err));
+      }
+    };
   }, [tokenData, authUser, targetUserId]);
 
   const handleVideoCall = () => {
@@ -112,4 +119,5 @@ const ChatPage = () => {
     </div>
   );
 };
+
 export default ChatPage;
