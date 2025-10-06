@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // useNavigate needed only in CallContent
+import { useParams, useNavigate } from "react-router-dom";
 import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
@@ -35,6 +35,7 @@ const CallPage = () => {
   });
 
   useEffect(() => {
+    let mounted = true;
     const initCall = async () => {
       if (!tokenData?.token || !authUser || !callId) return;
 
@@ -55,17 +56,25 @@ const CallPage = () => {
 
         await callInstance.join({ create: true });
 
+        if (!mounted) return;
+
         setClient(videoClient);
         setCall(callInstance);
       } catch (error) {
         console.error("Error joining call:", error);
         toast.error("Could not join the call. Please try again.");
       } finally {
-        setIsConnecting(false);
+        if (mounted) setIsConnecting(false);
       }
     };
 
     initCall();
+
+    return () => {
+      mounted = false;
+      if (call) call.leave().catch(console.error);
+      if (client) client.disconnectUser().catch(console.error);
+    };
   }, [tokenData, authUser, callId]);
 
   if (isLoading || isConnecting) return <PageLoader />;
@@ -90,7 +99,7 @@ const CallPage = () => {
 const CallContent = () => {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
-  const navigate = useNavigate(); // needed here
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (callingState === CallingState.LEFT) {
