@@ -1,5 +1,17 @@
 # 💬 Talkify
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/fbf9f704-e077-478d-9112-672e343c96b5" alt="Home Page" width="90%" />
+</div>
+<br/>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7fdbfed2-e442-40f1-be8c-503159909faf" width="90%" />
+</div>
+<br/>
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3249d21d-d976-43d7-a615-803a5706517d" alt="Second Screenshot" width="90%" />
+</div>
+
 ## 🤖 Introduction
 Talkify is a modern real-time messaging & video calling platform built to connect people across the globe.
 From instant chats with typing indicators and reactions to 1-on-1 video calls with screen sharing & recording, Talkify is designed to make communication seamless, fast, and enjoyable.
