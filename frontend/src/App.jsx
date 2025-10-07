@@ -12,6 +12,7 @@ import PageLoader from './components/PageLoader.jsx';
 import useAuthUser from './hooks/useAuthUser.js';
 import Layout from './components/Layout.jsx';
 import { useThemeStore } from './store/useThemeStore.js';
+import FriendPage from './pages/Friendpage.jsx';
 
 const App = () => {
   const { isLoading, authUser } = useAuthUser();
@@ -25,6 +26,7 @@ const App = () => {
   return (
     <div className="h-screen" data-theme={theme}>
       <Routes>
+        {/* Home */}
         <Route 
           path="/" 
           element={isAuthenticated && isOnboarded ? (
@@ -33,14 +35,18 @@ const App = () => {
             <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
           )}
         />
+
+        {/* Friends ✅ */}
         <Route 
-          path="/signup" 
-          element={!isAuthenticated ? <SignUpPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
+          path="/friends" 
+          element={isAuthenticated && isOnboarded ? (
+            <Layout showSidebar={true}><FriendPage /></Layout>
+          ) : (
+            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+          )}
         />
-        <Route 
-          path="/login" 
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
-        />  
+
+        {/* Notifications */}
         <Route 
           path="/notifications" 
           element={isAuthenticated && isOnboarded ? (
@@ -49,6 +55,16 @@ const App = () => {
             <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
           )}
         />
+
+        {/* Other Routes */}
+        <Route 
+          path="/signup" 
+          element={!isAuthenticated ? <SignUpPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
+        />
+        <Route 
+          path="/login" 
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to={isOnboarded ? "/" : "/onboarding"} />}
+        />  
         <Route 
           path="/call/:id" 
           element={isAuthenticated ? <CallPage /> : <Navigate to="/login" />}
