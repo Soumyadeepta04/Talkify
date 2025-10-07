@@ -1,19 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { acceptFriendRequest, getFriendRequests, rejectFriendRequest } from "../lib/api"; // Ensure you have rejectFriendRequest
+import { acceptFriendRequest, getFriendRequests, rejectFriendRequest } from "../lib/api";
 import { Bell, Check, Clock, UserPlus, X } from "lucide-react";
 import NoNotificationsFound from "../components/NoNotificationsFound";
 import { formatDistanceToNow } from "date-fns";
 import toast from "react-hot-toast";
+import useAuthUser from "../hooks/useAuthUser"; // Import the hook
 
 const NotificationsPage = () => {
   const queryClient = useQueryClient();
+  const { authUser } = useAuthUser(); // Get the authenticated user safely
 
   const { data: friendRequests, isLoading } = useQuery({
     queryKey: ["friendRequests"],
     queryFn: getFriendRequests,
   });
 
-  // Mutation for accepting a friend request
   const { mutate: acceptRequestMutation, isPending: isAccepting } = useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: () => {
@@ -22,34 +23,30 @@ const NotificationsPage = () => {
       queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
     onError: (error) => {
-        toast.error(error.response?.data?.message || "Failed to accept request.");
-    }
+      toast.error(error.response?.data?.message || "Failed to accept request.");
+    },
   });
 
-  // (New) Mutation for rejecting a friend request
   const { mutate: rejectRequestMutation, isPending: isRejecting } = useMutation({
     mutationFn: rejectFriendRequest,
     onSuccess: () => {
       toast.error("Friend request rejected.");
       queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
     },
-     onError: (error) => {
-        toast.error(error.response?.data?.message || "Failed to reject request.");
-    }
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to reject request.");
+    },
   });
 
   const incomingRequests = friendRequests?.incomingReqs || [];
   const acceptedRequests = friendRequests?.acceptedReqs || [];
 
   return (
-    // Added bg-base-100 to fix the background color issue
     <div className="bg-base-100 min-h-screen p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto max-w-3xl">
         <div className="mb-8">
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-base-content">Notifications</h1>
-            <p className="text-base-content/70 mt-1">
-                Manage your friend requests and see new connections.
-            </p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-base-content">Notifications</h1>
+          <p className="text-base-content/70 mt-1">Manage your friend requests and see new connections.</p>
         </div>
 
         {isLoading ? (
@@ -62,7 +59,6 @@ const NotificationsPage = () => {
               <NoNotificationsFound />
             ) : (
               <div className="space-y-10">
-                {/* Section for Friend Requests */}
                 {incomingRequests.length > 0 && (
                   <section>
                     <h2 className="text-lg font-bold flex items-center gap-3 mb-4">
@@ -83,12 +79,10 @@ const NotificationsPage = () => {
                                 </div>
                               </div>
                               <div>
-                                <p className="font-bold text-base-content">
-                                  {request.sender.FullName}
-                                </p>
+                                <p className="font-bold text-base-content">{request.sender.FullName}</p>
                                 <p className="text-xs text-base-content/60 flex items-center gap-1.5 mt-1">
-                                    <Clock size={12} />
-                                    {formatDistanceToNow(new Date(request.createdAt), { addSuffix: true })}
+                                  <Clock size={12} />
+                                  {formatDistanceToNow(new Date(request.createdAt), { addSuffix: true })}
                                 </p>
                               </div>
                             </div>
@@ -105,7 +99,7 @@ const NotificationsPage = () => {
                                 onClick={() => acceptRequestMutation(request._id)}
                                 disabled={isAccepting || isRejecting}
                               >
-                               {isAccepting ? <span className="loading loading-spinner loading-xs"></span> : <Check size={16} />}
+                                {isAccepting ? <span className="loading loading-spinner loading-xs"></span> : <Check size={16} />}
                               </button>
                             </div>
                           </div>
@@ -115,7 +109,6 @@ const NotificationsPage = () => {
                   </section>
                 )}
 
-                {/* Section for New Connections */}
                 {acceptedRequests.length > 0 && (
                   <section>
                     <h2 className="text-lg font-bold flex items-center gap-3 mb-4">
@@ -124,26 +117,29 @@ const NotificationsPage = () => {
                     </h2>
                     <ul className="space-y-3">
                       {acceptedRequests.map((notification) => {
-                          const isSender = notification.sender._id === queryClient.getQueryData(['authUser'])?._id;
-                          const otherUser = isSender ? notification.recipient : notification.sender;
-                          const message = isSender ? `You are now friends with ${otherUser.FullName}` : `${otherUser.FullName} accepted your friend request.`;
+                        // UPDATED LOGIC: Using the authUser from the hook is safer and more reliable
+                        const isSender = notification.sender._id === authUser?._id;
+                        const otherUser = isSender ? notification.recipient : notification.sender;
+                        const message = isSender
+                          ? `You are now friends with ${otherUser.FullName}`
+                          : `${otherUser.FullName} accepted your friend request.`;
 
-                          return (
-                            <li key={notification._id} className="flex items-center gap-4 p-3 bg-base-200/50 rounded-lg">
-                                <div className="avatar">
-                                    <div className="w-10 h-10 rounded-full">
-                                        <img src={otherUser.profilepic} alt={otherUser.FullName} />
-                                    </div>
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-sm text-base-content">{message}</p>
-                                    <p className="text-xs text-base-content/60 mt-1 flex items-center gap-1.5">
-                                        <Clock size={12} />
-                                        {formatDistanceToNow(new Date(notification.updatedAt), { addSuffix: true })}
-                                    </p>
-                                </div>
-                            </li>
-                          )
+                        return (
+                          <li key={notification._id} className="flex items-center gap-4 p-3 bg-base-200/50 rounded-lg">
+                            <div className="avatar">
+                              <div className="w-10 h-10 rounded-full">
+                                <img src={otherUser.profilepic} alt={otherUser.FullName} />
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm text-base-content">{message}</p>
+                              <p className="text-xs text-base-content/60 mt-1 flex items-center gap-1.5">
+                                <Clock size={12} />
+                                {formatDistanceToNow(new Date(notification.updatedAt), { addSuffix: true })}
+                              </p>
+                            </div>
+                          </li>
+                        );
                       })}
                     </ul>
                   </section>
