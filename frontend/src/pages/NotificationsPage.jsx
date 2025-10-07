@@ -79,7 +79,7 @@ const NotificationsPage = () => {
                             <div className="flex items-center gap-4">
                               <div className="avatar">
                                 <div className="w-12 h-12 rounded-full ring-2 ring-primary/50 ring-offset-base-100 ring-offset-2">
-                                  <img src={request.sender.profilePic} alt={request.sender.FullName} />
+                                  <img src={request.sender.profilepic} alt={request.sender.FullName} />
                                 </div>
                               </div>
                               <div>
@@ -132,7 +132,7 @@ const NotificationsPage = () => {
                             <li key={notification._id} className="flex items-center gap-4 p-3 bg-base-200/50 rounded-lg">
                                 <div className="avatar">
                                     <div className="w-10 h-10 rounded-full">
-                                        <img src={otherUser.profilePic} alt={otherUser.FullName} />
+                                        <img src={otherUser.profilepic} alt={otherUser.FullName} />
                                     </div>
                                 </div>
                                 <div className="flex-1">
