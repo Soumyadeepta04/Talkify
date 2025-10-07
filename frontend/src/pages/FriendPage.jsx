@@ -12,7 +12,6 @@ const FriendPage = () => {
   return (
     <div className="min-h-screen bg-base-100 p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto space-y-8">
-        {/* Title */}
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
           Your Friends
         </h1>

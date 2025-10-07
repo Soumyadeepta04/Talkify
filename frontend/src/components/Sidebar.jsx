@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import useAuthuser from "../hooks/useAuthUser";
-import {
-  Bell,
-  Home,
-  Users,
-  MessageCircle,
-  Menu,
-  X,
-} from "lucide-react";
+import { Bell, Home, Users, MessageCircle, Menu, X } from "lucide-react";
 
 const Sidebar = () => {
   const { authUser } = useAuthuser();
@@ -17,11 +10,10 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Instead of destructuring with 'icon: Icon', we just keep the reference
   const navLinks = [
-    { to: "/", label: "Home", Icon: Home },
-    { to: "/friends", label: "Friends", Icon: Users },
-    { to: "/notifications", label: "Notifications", Icon: Bell },
+    { to: "/", label: "Home", icon: Home },
+    { to: "/friends", label: "Friends", icon: Users },
+    { to: "/notifications", label: "Notifications", icon: Bell },
   ];
 
   return (
@@ -66,19 +58,22 @@ const Sidebar = () => {
 
         {/* NAV LINKS */}
         <nav className="flex-1 p-4 space-y-1">
-          {navLinks.map(({ to, label, Icon }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case transition ${
-                currentPath === to ? "btn-active" : ""
-              }`}
-              title={isCollapsed ? label : ""}
-            >
-              <Icon size={20} className="text-base-content opacity-70" />
-              {!isCollapsed && <span>{label}</span>}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const IconComponent = link.icon;
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case transition ${
+                  currentPath === link.to ? "btn-active" : ""
+                }`}
+                title={isCollapsed ? link.label : ""}
+              >
+                <IconComponent size={20} className="text-base-content opacity-70" />
+                {!isCollapsed && <span>{link.label}</span>}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* USER PROFILE */}
@@ -119,21 +114,23 @@ const Sidebar = () => {
               </button>
             </div>
 
-            {/* NAV LINKS */}
             <nav className="flex-1 space-y-2">
-              {navLinks.map(({ to, label, Icon }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setIsMobileOpen(false)}
-                  className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
-                    currentPath === to ? "btn-active" : ""
-                  }`}
-                >
-                  <Icon size={20} className="text-base-content opacity-70" />
-                  <span>{label}</span>
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const IconComponent = link.icon;
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setIsMobileOpen(false)}
+                    className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
+                      currentPath === link.to ? "btn-active" : ""
+                    }`}
+                  >
+                    <IconComponent size={20} className="text-base-content opacity-70" />
+                    <span>{link.label}</span>
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* PROFILE */}
@@ -155,11 +152,7 @@ const Sidebar = () => {
             </div>
           </div>
 
-          {/* BACKDROP */}
-          <div
-            onClick={() => setIsMobileOpen(false)}
-            className="flex-1 bg-black/40"
-          />
+          <div onClick={() => setIsMobileOpen(false)} className="flex-1 bg-black/40" />
         </div>
       )}
     </>
