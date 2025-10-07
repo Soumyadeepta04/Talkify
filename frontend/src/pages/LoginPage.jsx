@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
@@ -13,7 +14,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8" data-theme="forest">
+    <div
+      className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 overflow-y-auto"
+      data-theme="forest"
+    >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-2xl shadow-xl overflow-hidden transition-all duration-500">
         
         {/* LOGIN FORM */}
@@ -38,6 +42,7 @@ const LoginPage = () => {
               <p className="text-sm opacity-70">Sign in to continue your language journey</p>
             </div>
 
+            {/* Email */}
             <div className="form-control space-y-2">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -47,23 +52,37 @@ const LoginPage = () => {
                 placeholder="hello@example.com"
                 className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 value={loginData.email}
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
                 required
               />
             </div>
 
+            {/* Password with show/hide */}
             <div className="form-control space-y-2">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-                value={loginData.password}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all pr-10"
+                  value={loginData.password}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, password: e.target.value })
+                  }
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
@@ -80,7 +99,10 @@ const LoginPage = () => {
             <div className="text-center mt-4">
               <p className="text-sm">
                 Don’t have an account?{" "}
-                <Link to="/signup" className="text-primary hover:underline transition-colors">
+                <Link
+                  to="/signup"
+                  className="text-primary hover:underline transition-colors"
+                >
                   Create one
                 </Link>
               </p>
@@ -88,12 +110,21 @@ const LoginPage = () => {
           </form>
         </div>
 
-        {/* IMAGE SECTION */}
-        <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center animate-fadeInRight">
+        {/* IMAGE SECTION (always visible, stacked on mobile) */}
+        <div className="w-full lg:w-1/2 bg-primary/10 flex items-center justify-center animate-fadeInRight">
           <div className="max-w-md p-10 text-center space-y-4">
-            <img src="/i.png" alt="Language connection illustration" className="w-72 mx-auto animate-float" />
-            <h2 className="text-xl font-semibold">Connect with language partners worldwide</h2>
-            <p className="opacity-70">Practice conversations, make friends, and improve your language skills together.</p>
+            <img
+              src="/i.png"
+              alt="Language connection illustration"
+              className="w-72 mx-auto animate-float"
+            />
+            <h2 className="text-xl font-semibold">
+              Connect with language partners worldwide
+            </h2>
+            <p className="opacity-70">
+              Practice conversations, make friends, and improve your language
+              skills together.
+            </p>
           </div>
         </div>
       </div>
