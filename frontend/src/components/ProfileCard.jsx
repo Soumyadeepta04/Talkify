@@ -15,7 +15,7 @@ const ProfileCard = () => {
         <div className="flex justify-center mb-4">
           <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-primary ring-offset-base-100 ring-offset-2">
             {/* Corrected to use 'profilePic' to match OnboardingPage */}
-            <img src={authUser.profilePic || "/default-avatar.png"} alt="Profile" className="w-full h-full object-cover" />
+            <img src={authUser.profilepic || "/default-avatar.png"} alt="Profile" className="w-full h-full object-cover" />
           </div>
         </div>
 
