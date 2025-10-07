@@ -36,7 +36,7 @@ const Sidebar = () => {
       <aside
         className={`${
           isCollapsed ? "w-20" : "w-64"
-        } bg-base-200 border-r border-base-300 flex-col h-screen sticky top-0 hidden lg:flex transition-all duration-300`}
+        } bg-base-200 border-r border-base-300 flex-col h-screen sticky top-0 hidden lg:flex transition-all duration-300 overflow-y-auto`}
       >
         {/* LOGO */}
         <div className="p-5 border-b border-base-300 flex items-center justify-between">
@@ -99,8 +99,8 @@ const Sidebar = () => {
 
       {/* MOBILE DRAWER */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-40 flex">
-          <div className="w-64 bg-base-200 h-full shadow-xl p-4 flex flex-col">
+        <div className="fixed inset-0 z-50 flex">
+          <div className="w-64 max-w-full bg-base-200 h-full shadow-xl p-4 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
               <Link to="/" className="flex items-center gap-2">
                 <MessageCircle size={32} className="text-primary" />
@@ -133,7 +133,6 @@ const Sidebar = () => {
               })}
             </nav>
 
-            {/* PROFILE */}
             <div className="mt-auto border-t border-base-300 pt-4">
               <div className="flex items-center gap-3">
                 <div className="avatar">
@@ -152,7 +151,11 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <div onClick={() => setIsMobileOpen(false)} className="flex-1 bg-black/40" />
+          {/* BACKDROP */}
+          <div
+            onClick={() => setIsMobileOpen(false)}
+            className="flex-1 bg-black/40"
+          />
         </div>
       )}
     </>
