@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
@@ -38,6 +39,7 @@ const LoginPage = () => {
               <p className="text-sm opacity-70">Sign in to continue your language journey</p>
             </div>
 
+            {/* Email */}
             <div className="form-control space-y-2">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -52,18 +54,28 @@ const LoginPage = () => {
               />
             </div>
 
+            {/* Password with toggle */}
             <div className="form-control space-y-2">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-                value={loginData.password}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="input input-bordered w-full focus:outline-none focus:ring-2 focus:ring-primary transition-all pr-10"
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
