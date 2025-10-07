@@ -34,9 +34,10 @@ const Sidebar = () => {
 
       {/* DESKTOP SIDEBAR */}
       <aside
+        // THIS IS THE UPDATED LINE -- flex-col is removed and lg:flex-col is added
         className={`${
           isCollapsed ? "w-20" : "w-64"
-        } bg-base-200 border-r border-base-300 flex-col h-screen sticky top-0 hidden lg:flex transition-all duration-300 overflow-y-auto`}
+        } bg-base-200 border-r border-base-300 h-screen sticky top-0 hidden lg:flex lg:flex-col transition-all duration-300 overflow-y-auto`}
       >
         {/* LOGO */}
         <div className="p-5 border-b border-base-300 flex items-center justify-between">
