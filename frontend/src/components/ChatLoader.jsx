@@ -1,16 +1,19 @@
-const ChatLoader = () => {
+import { LoaderIcon } from "lucide-react";
+
+function ChatLoader() {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-base-100 p-4">
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 rounded-full bg-primary animate-pulse [animation-delay:-0.3s]"></div>
-        <div className="w-4 h-4 rounded-full bg-primary animate-pulse [animation-delay:-0.15s]"></div>
-        <div className="w-4 h-4 rounded-full bg-primary animate-pulse"></div>
+    <div className="h-[93vh] flex flex-col items-center justify-center bg-gradient-to-b from-[#c9e8c9] to-[#b7e7bb]">
+      <div className="p-6 bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg flex flex-col items-center">
+        <LoaderIcon className="animate-spin size-12 text-green-700" />
+        <p className="mt-4 text-lg font-semibold tracking-wide text-green-800">
+          Connecting to chat...
+        </p>
+        <p className="text-sm text-green-700 mt-1">
+          Please wait a moment 🚀
+        </p>
       </div>
-      <p className="mt-6 text-center text-lg font-semibold text-base-content/80">
-        Connecting to Chat...
-      </p>
     </div>
   );
-};
+}
 
 export default ChatLoader;

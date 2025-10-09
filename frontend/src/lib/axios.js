@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Create an Axios instance
 export const axiosInstance = axios.create({
-  baseURL: "https://talkify-wheat.vercel.app/api", // Backend URL
+  baseURL: "https://talkify-wheat.vercel.app/api",
+  // baseURL: "http://localhost:5000/api", // Backend URL
   withCredentials: true, // Send cookies automatically
 });
 
