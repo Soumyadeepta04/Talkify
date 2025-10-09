@@ -11,15 +11,15 @@
 
 | Login Page | Home Page |
 |------------|-----------|
-| ![Login](https://github.com/user-attachments/assets/fbf9f704-e077-478d-9112-672e343c96b5) | ![Home](https://github.com/user-attachments/assets/7fdbfed2-e442-40f1-be8c-503159909faf) |
+| <img src="https://github.com/user-attachments/assets/fbf9f704-e077-478d-9112-672e343c96b5" width="400" height="250"/> | <img src="https://github.com/user-attachments/assets/7fdbfed2-e442-40f1-be8c-503159909faf" width="400" height="250"/> |
 
 | Chat Page | Notifications Page |
 |-----------|--------------------|
-| ![Chat](https://github.com/user-attachments/assets/b4b45983-cf46-4a45-8dda-32a12a56a225) | ![Notifications](https://github.com/user-attachments/assets/3249d21d-d976-43d7-a615-803a5706517d) |
+| <img src="https://github.com/user-attachments/assets/b4b45983-cf46-4a45-8dda-32a12a56a225" width="400" height="250"/> | <img src="https://github.com/user-attachments/assets/3249d21d-d976-43d7-a615-803a5706517d" width="400" height="250"/> |
 
 | Video Call Page |  |
 |-----------------|--|
-| ![Video Call](URL_TO_YOUR_VIDEO_CALL_PAGE_IMAGE) |  |
+| <img src="URL_TO_YOUR_VIDEO_CALL_PAGE_IMAGE" width="400" height="250"/> |  |
 
 ---
 
