@@ -7,19 +7,21 @@
 
 ---
 
-## 📸 Screenshots
+# 📸 Screenshots
 
-| Login Page | Home Page |
-|------------|-----------|
-| <img src="https://github.com/user-attachments/assets/fbf9f704-e077-478d-9112-672e343c96b5" width="400" height="250"/> | <img src="https://github.com/user-attachments/assets/7fdbfed2-e442-40f1-be8c-503159909faf" width="400" height="250"/> |
-
-| Chat Page | Notifications Page |
-|-----------|--------------------|
-| <img src="https://github.com/user-attachments/assets/b4b45983-cf46-4a45-8dda-32a12a56a225" width="400" height="250"/> | <img src="https://github.com/user-attachments/assets/3249d21d-d976-43d7-a615-803a5706517d" width="400" height="250"/> |
-
-| Video Call Page |  |
-|-----------------|--|
-| <img src="URL_TO_YOUR_VIDEO_CALL_PAGE_IMAGE" width="400" height="250"/> |  |
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/fbf9f704-e077-478d-9112-672e343c96b5" alt="Login Page" width="400"/></td>
+    <td><img src="https://github.com/user-attachments/assets/7fdbfed2-e442-40f1-be8c-503159909faf" alt="Home Page" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/b4b45983-cf46-4a45-8dda-32a12a56a225" alt="Chat Page" width="400"/></td>
+    <td><img src="https://github.com/user-attachments/assets/3249d21d-d976-43d7-a615-803a5706517d" alt="Notifications Page" width="400"/></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="https://github.com/user-attachments/assets/057eeb62-f7db-4f91-8bf1-d50ba9f7357a" alt="Video Call Page" width="820"/></td>
+  </tr>
+</table>
 
 ---
 
